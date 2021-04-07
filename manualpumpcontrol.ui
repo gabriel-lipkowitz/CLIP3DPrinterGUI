@@ -126,6 +126,9 @@
    <property name="decimals">
     <number>5</number>
    </property>
+   <property name="maximum">
+    <double>100000.000000000000000</double>
+   </property>
   </widget>
   <widget class="QLabel" name="CurrentInfuseRate">
    <property name="geometry">

@@ -34,7 +34,7 @@ manualpumpcontrol::~manualpumpcontrol()
 void manualpumpcontrol::on_ConnectButton_clicked()
 {
 
-    if (SMC.serial.openDevice("COM3",57600) == 1)
+    if (SMC.serial.openDevice("COM3",9600) == 1)
     {
         ui->TerminalOut->append("Serial Port Connected");
 
@@ -42,6 +42,18 @@ void manualpumpcontrol::on_ConnectButton_clicked()
         ui->ConnectionIndicator->setText("Connected");
 
         ConnectionFlag = true;
+        Sleep(50);
+        QString Command = ".";
+        const char* CommandToSend = Command.toLatin1().data();
+        SMC.serial.writeString(CommandToSend);
+        Sleep(50);
+        QString Command2 = "cmd.\r\n";
+        const char* Command2ToSend = Command2.toLatin1().data();
+        SMC.serial.writeString(CommandToSend);
+        Sleep(50);
+        QString Command3 = "ver.\r\n";
+        const char* Command3ToSend = Command3.toLatin1().data();
+        SMC.serial.writeString(CommandToSend);
     }
     else
     {
@@ -87,9 +99,21 @@ void manualpumpcontrol::on_SetInfuseRate_clicked()
     QString ExpDarkRatioString = "Set Infusion Rate to: " + QString::number(InfusionRate);
     ui->TerminalOut->append(ExpDarkRatioString);
 
-    QString Command = "irate " + QString::number(InfusionRate) + "ul/s.";
+    QString Command = "irate " + QString::number(InfusionRate) + " ul/s.\r\n";
     const char* CommandToSend = Command.toLatin1().data();
     SMC.serial.writeString(CommandToSend);
+    /*
+    QString Command2 = "cmd.\r\n";
+    const char* Command2ToSend = Command2.toLatin1().data();
+    SMC.serial.writeString(CommandToSend);
+
+    QString Command3 = "ver.\r\n";
+    const char* Command3ToSend = Command3.toLatin1().data();
+    SMC.serial.writeString(CommandToSend);
+    */
+
+
+
 }
 
 char* manualpumpcontrol::SerialRead()
@@ -134,7 +158,7 @@ void manualpumpcontrol::on_StartInfuse_clicked()
     QString InfuseString = "Start infusion at rate = " + QString::number(InfusionRate) + "ul/s";
     ui->TerminalOut->append(InfuseString);
 
-    QString Command = "irun.";
+    QString Command = "irun.\r\n";
     const char* CommandToSend = Command.toLatin1().data();
     SMC.serial.writeString(CommandToSend);
 }
@@ -144,8 +168,16 @@ void manualpumpcontrol::on_StopInfuse_clicked()
     QString StopString = "Stop infusion";
     ui->TerminalOut->append(StopString);
 
-    QString Command = "stp.";
+    QString Command = "stop.\r\n";
     const char* CommandToSend = Command.toLatin1().data();
+    SMC.serial.writeString(CommandToSend);
+
+    QString Command2 = "cmd.\r\n";
+    const char* Command2ToSend = Command2.toLatin1().data();
+    SMC.serial.writeString(CommandToSend);
+
+    QString Command3 = "ver.\r\n";
+    const char* Command3ToSend = Command3.toLatin1().data();
     SMC.serial.writeString(CommandToSend);
 }
 
